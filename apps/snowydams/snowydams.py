@@ -77,16 +77,14 @@ class Get_Snowy_Dams(hass.Hass):
         
         soup = BeautifulSoup(response.text, "html.parser")
 
-        #get the 7th script block with the variables in it
+        #get the 14th script block with the variables in it
         page = soup.findAll('script')[14]
         #convert the soup variable into a string so we can manipulate
         tags = str(page)
-        self.log(tags)
         #split by the 'var ' so we can get the correct variable values
         stags = tags.split("var ")
-        #get the 3rd variable field from the list (lifestyle)
+        #get the 1st variable field from the list (current year)
         stags = stags[1]
-        self.log(stags)
         #remove the js variable and ; so we get to the raw data
         stags = stags.replace("data_year_current = ", "")
         stags = stags.replace(";", "")
