@@ -49,7 +49,7 @@ init_commands: []
 In the apps.yaml file in the appdaemon/apps directory - 
 
 ```yaml
-canberra_dams:
+snowy_dams:
   module: snowydams
   class: Get_Snowy_Dams
   DAM_FLAG: "input_boolean.check_snowy_dams"
