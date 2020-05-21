@@ -51,6 +51,10 @@ class Get_Snowy_Dams(hass.Hass):
         # listen to HA for the flag to update the sensor
         self.listen_state(self.main, self.DAM_FLAG, new="on")
 
+        # set to run each morning at 5.17am
+        runtime = datatime.time(5,17,0)
+        self.run_daily(self.load, runtime)
+
     # run the app
     def main(self, entity, attribute, old, new, kwargs):
         """ create the sensor and turn off the flag

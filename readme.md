@@ -24,8 +24,9 @@ local `apps` directory, then add the configuration to enable the `snowydams` mod
 The [Snowy Hydro](https://www.snowyhydro.com.au/our-energy/water/storages/lake-levels-calculator/) site provides this information, this just scrapes
 the page and makes the information available as sensors in HA.
 
-As this is non time critical sensor, it does not get the information on a set time schedule, but watches a input_boolean that you 
-specify for when to update the sensor. You can obviously automate when you want that input_boolean to turn on.
+As this is non time critical sensor, it only gets the information once per day at 5.17am.
+
+I have also set it for you to provide an input_boolean that you specify for when to update the sensor beyond the daily schedule. You can obviously automate when you want that input_boolean to turn on.
 
 ### To Run
 
