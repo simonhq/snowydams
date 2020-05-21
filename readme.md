@@ -3,7 +3,6 @@
 
 _Creates sensors for Home Assistant with the Snowy Hydro Reservoir level information_
 
-
 ## Lovelace Examples
 
 ![Example of the entities in Lovelace](https://github.com/simonhq/snowydams/blob/master/snowy_dams_entities.PNG)

@@ -52,7 +52,7 @@ class Get_Snowy_Dams(hass.Hass):
         self.listen_state(self.main, self.DAM_FLAG, new="on")
 
         # set to run each morning at 5.17am
-        runtime = datatime.time(5,17,0)
+        runtime = datetime.time(5,17,0)
         self.run_daily(self.load, runtime)
 
     # run the app
