@@ -12,17 +12,13 @@ _Creates sensors for Home Assistant with the Snowy Hydro Reservoir level informa
 
 ## Installation
 
-This app is best installed using
-[HACS](https://github.com/custom-components/hacs), so that you can easily track
-and download updates.
+This app is best installed using [HACS](https://github.com/custom-components/hacs), so that you can easily track and download updates.
 
-Alternatively, you can download the `snowydams` directory from inside the `apps` directory here to your
-local `apps` directory, then add the configuration to enable the `snowydams` module.
+Alternatively, you can download the `snowydams` directory from inside the `apps` directory here to your local `apps` directory, then add the configuration to enable the `snowydams` module.
 
 ## How it works
 
-The [Snowy Hydro](https://www.snowyhydro.com.au/our-energy/water/storages/lake-levels-calculator/) site provides this information, this just scrapes
-the page and makes the information available as sensors in HA.
+The [Snowy Hydro](https://www.snowyhydro.com.au/our-energy/water/storages/lake-levels-calculator/) site provides this information, this just scrapes the page and makes the information available as sensors in HA.
 
 As this is non time critical sensor, it only gets the information once per day at 5.17am.
 
@@ -30,8 +26,7 @@ I have also set it for you to provide an input_boolean that you specify for when
 
 ### To Run
 
-You will need to create an input_boolean entity to watch for when to update the sensor. When this
-`input_boolean` is turned on, whether manually or by another automation you
+You will need to create an input_boolean entity to watch for when to update the sensor. When this `input_boolean` is turned on, whether manually or by another automation you
 create, the scraping process will be run to create/update the sensor.
 
 ## AppDaemon Libraries
