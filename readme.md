@@ -17,7 +17,7 @@ Alternatively, you can download the `snowydams` directory from inside the `apps`
 
 ## How it works
 
-The [Snowy Hydro](https://www.snowyhydro.com.au/our-energy/water/storages/lake-levels-calculator/) site provides this information, this just scrapes the page and makes the information available as sensors in HA.
+The [Snowy Hydro](https://www.snowyhydro.com.au/generation/live-data/lake-levels/) site provides this information, this accesses the data page and makes the information available as sensors in HA.
 
 As this is non time critical sensor, it only gets the information once per day at 5.17am.
 
@@ -30,12 +30,11 @@ create, the scraping process will be run to create/update the sensor.
 
 ## AppDaemon Libraries
 
-Please add the following packages to your appdaemon 4 configuration on the supervisor page of the add-on.
+This app requires no special packages to be added to your appdaemon 4 configuration on the supervisor page of the add-on.
 
 ``` yaml
 system_packages: []
-python_packages:
-  - bs4
+python_packages: []
 init_commands: []
 ```
 

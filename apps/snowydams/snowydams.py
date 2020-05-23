@@ -24,14 +24,16 @@
 import requests
 import datetime
 import json
-from bs4 import BeautifulSoup
 import appdaemon.plugins.hass.hassapi as hass
 
 class Get_Snowy_Dams(hass.Hass):
 
     # the name of the flag in HA (input_boolean.xxx) that will be watched/turned off
     DAM_FLAG = ""
-    URL = "https://www.snowyhydro.com.au/our-energy/water/storages/lake-levels-calculator/"
+
+    base_url = "https://www.snowyhydro.com.au/wp-content/themes/snowyhydro/inc/getData.php?yearA="
+    extra_url = "&yearB="
+    URL = ""
 
     up_sensor = "sensor.snowy_dam_last_updated"
     payload = {}
@@ -45,6 +47,9 @@ class Get_Snowy_Dams(hass.Hass):
         # get the values from the app.yaml that has the relevant personal settings
         self.DAM_FLAG = self.args["DAM_FLAG"]
 
+        #build todays url
+        self.build_url()
+
         # create the original sensor
         self.load()
 
@@ -53,7 +58,7 @@ class Get_Snowy_Dams(hass.Hass):
 
         # set to run each morning at 5.17am
         runtime = datetime.time(5,17,0)
-        self.run_daily(self.load, runtime)
+        self.run_daily(self.daily_load, runtime)
 
     # run the app
     def main(self, entity, attribute, old, new, kwargs):
@@ -65,6 +70,30 @@ class Get_Snowy_Dams(hass.Hass):
         
         # turn off the flag in HA to show completion
         self.turn_off(self.DAM_FLAG)
+
+    # schedule the app
+    def daily_load(self, kwargs):
+        """ scheduled load
+            
+        """
+
+        #build todays url
+        self.build_url()
+        
+        # create the sensor with the dam information 
+        self.load()
+       
+    def build_url(self):
+        """ build the url for today
+        """
+        # get today's date
+        today = datetime.date.today()
+        # get current year and last year
+        thisyear = today.year
+        lastyear = thisyear - 1
+        #update the url for today
+        self.URL = self.base_url + str(thisyear) + self.extra_url + str(lastyear)
+
 
     def load(self):
         """ parse the ICON Water ACT dam level website
@@ -79,26 +108,16 @@ class Get_Snowy_Dams(hass.Hass):
         date_time = tim.strftime("%d/%m/%Y, %H:%M:%S")
         self.set_state(self.up_sensor, state=date_time, replace=True, attributes= {"icon": "mdi:timeline-clock-outline", "friendly_name": "Snowy Dam Levels Data last sourced"})
         
-        soup = BeautifulSoup(response.text, "html.parser")
-
-        #get the 14th script block with the variables in it
-        page = soup.findAll('script')[14]
-        #convert the soup variable into a string so we can manipulate
-        tags = str(page)
-        #split by the 'var ' so we can get the correct variable values
-        stags = tags.split("var ")
-        #get the 1st variable field from the list (current year)
-        stags = stags[1]
-        #remove the js variable and ; so we get to the raw data
-        stags = stags.replace("data_year_current = ", "")
-        stags = stags.replace(";", "")
-        #convert to json
-        jtags = json.loads(stags)
-        
-        #get yesterdays info
+        #get yesterdays info & this year
         today = datetime.date.today()
+        thisyear = today.year
         yesterday = today - datetime.timedelta(days=1)
         yester_date = yesterday.strftime("%Y-%m-%d")
+
+        #read in the json dataset
+        page = response.json()
+        # use the current year as the first key
+        jtags = page[str(thisyear)]
 
         #get the second series - with percentages and remaining volumes
         dams = jtags['snowyhydro']['level']
